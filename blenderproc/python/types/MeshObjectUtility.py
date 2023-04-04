@@ -302,6 +302,11 @@ class MeshObject(Entity):
 
         :return: volume of a bounding box.
         """
+        diag = self.get_bound_box_sides()
+        # use the diagonal to calculate the volume of the box
+        return abs(diag[0]) * abs(diag[1]) * abs(diag[2])
+
+    def get_bound_box_sides(self):
         bb = self.get_bound_box()
         # Search for the point which is the maximum distance away from the first point
         # we call this first point min and the furthest away point max
@@ -314,8 +319,7 @@ class MeshObject(Entity):
                 max_point = point
                 max_dist = dist
         diag = max_point - min_point
-        # use the diagonal to calculate the volume of the box
-        return abs(diag[0]) * abs(diag[1]) * abs(diag[2])
+        return abs(diag[0]), abs(diag[1]), abs(diag[2])
 
     def mesh_as_bmesh(self, return_copy=False) -> bmesh.types.BMesh:
         """ Returns a bmesh based on the object's mesh.
